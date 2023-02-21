@@ -10,7 +10,6 @@
         <b-nav-item
           :to="{
             name: 'consumers',
-            hash: '#consumers',
             replace: true,
           }"
           exact
@@ -20,7 +19,6 @@
         <b-nav-item
           :to="{
             name: 'items',
-            hash: '#items',
             replace: true,
           }"
           exact
@@ -69,8 +67,6 @@ export default {
       return this.$store.state.user;
     },
     actors() {
-      // console.log(this.$store.state.me.actors);
-      // return [];
       return this.$store.state.me?.actors ?? [];
     },
     currentActor() {
