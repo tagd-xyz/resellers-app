@@ -1,42 +1,40 @@
 {
-  "name": "portal",
-  "version": "1.0.0",
+  "name": "app",
+  "version": "0.0.1",
+  "description": "Tagd",
+  "productName": "Tagd for Resellers",
+  "author": "Juan Sierra <juan@totally.group>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
-    "lint:prettier": "prettier --check .",
-    "lint": "npm run lint:js && npm run lint:prettier",
-    "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix"
+    "lint": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.13.6",
-    "@nuxtjs/dotenv": "^1.4.1",
-    "@nuxtjs/firebase": "^8.2.2",
-    "bootstrap": "^4.6.2",
-    "bootstrap-vue": "^2.22.0",
-    "core-js": "^3.25.3",
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.21.1",
     "firebase": "^9.17.1",
     "firebaseui": "^6.0.2",
-    "nuxt": "^2.15.8",
-    "vue": "^2.7.10",
-    "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.10"
+    "pinia": "^2.0.11",
+    "pinia-plugin-persistedstate": "^3.1.0",
+    "quasar": "^2.6.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
-    "@nuxtjs/eslint-config": "^11.0.0",
-    "@nuxtjs/eslint-module": "^3.1.0",
-    "@vue/eslint-config-prettier": "^7.0.0",
-    "eslint": "^8.24.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-nuxt": "^4.0.0",
-    "eslint-plugin-vue": "^9.5.1",
-    "prettier": "^2.7.1",
-    "sass": "^1.57.1",
-    "sass-loader": "^10.1.1"
+    "@quasar/app-vite": "^1.0.0",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "autoprefixer": "^10.4.2",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "postcss": "^8.4.14",
+    "prettier": "^2.5.1"
+  },
+  "engines": {
+    "node": "^18 || ^16 || ^14.19",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
   }
 }
