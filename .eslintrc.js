@@ -61,13 +61,13 @@ module.exports = {
 
   // add your custom rules here
   rules: {
-
     'prefer-promise-reject-errors': 'off',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
 
-    'quotes': [2, 'single', { avoidEscape: true }],
+    quotes: [2, 'single', { avoidEscape: true }],
     'vue/multi-word-component-names': 'off',
-  }
-}
+    'vue/no-v-model-argument': 'off',
+  },
+};

@@ -1,174 +1,79 @@
 <template>
   <div class="q-pa-lg">
-    <q-form @submit.prevent="onSubmit">
-      <div class="row q-col-gutter-lg">
-        <div class="col">
-          <p class="text-h5">Item details</p>
-          <q-input
-            v-model="data.name"
-            label="Name"
-            hint="Enter the name of the item"
-            placeholder="i.e. LEATHER TOTE BAG"
-            :rules="[
-              (val) => (val && val.length > 0) || 'This field is required',
-            ]"
-            :disable="isPosting"
-          />
+    <q-table
+      flat
+      bordered
+      title="Available for resale"
+      :loading="isLoading"
+      :rows="list"
+      :columns="columns"
+      row-key="name"
+      selection="single"
+      v-model:selected="selected"
+      :pagination="{
+        sortBy: 'desc',
+        descending: false,
+        page: 1,
+        rowsPerPage: 50,
+      }"
+    />
 
-          <q-input
-            type="textarea"
-            v-model="data.description"
-            label="Description"
-            hint="Enter the description of the item"
-            placeholder="i.e. Leather tote bag with a crackled effect."
-            :rules="[
-              (val) => (val && val.length > 0) || 'This field is required',
-            ]"
-            :disable="isPosting"
-          />
+    <q-separator color="primary" class="q-my-md" />
 
-          <q-select
-            v-model="data.type"
-            :options="['Fashion', 'Sneakers']"
-            label="Type"
-            hint="Enter the type of the item"
-            placeholder="i.e. Fashion"
-            :rules="[
-              (val) => (val && val.length > 0) || 'This field is required',
-            ]"
-            :disable="isPosting"
-          />
-
-          <q-input
-            v-model="data.brand"
-            label="Brand"
-            hint="Enter the brand of the item"
-            placeholder="i.e. Zara"
-            :disable="isPosting"
-          />
-
-          <q-input
-            v-model="data.model"
-            label="Model"
-            hint="Enter the model of the item"
-            placeholder="i.e. Leather Totem 2023 White"
-            :disable="isPosting"
-          />
-
-          <q-input
-            v-model="data.size"
-            label="Size"
-            hint="Enter the size of the item"
-            placeholder="i.e. L"
-            :disable="isPosting"
-          />
-        </div>
-        <div class="col">
-          <p class="text-h5">Sales details</p>
-          <q-input
-            v-model="data.consumer"
-            label="Consumer"
-            hint="Enter the email of the consumer"
-            placeholder="i.e. john@gmail.com"
-            :rules="[
-              (val) => (val && val.length > 0) || 'This field is required',
-              (val) =>
-                val.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/) ||
-                'Please write a valid email address',
-            ]"
-            :disable="isPosting"
-          />
-
-          <q-input
-            v-model="data.transaction"
-            label="Transaction ID"
-            hint="Enter the transaction ID"
-            placeholder="i.e. 4926687623010"
-            :rules="[
-              (val) => (val && val.length > 0) || 'This field is required',
-            ]"
-            :disable="isPosting"
-          />
-        </div>
+    <div class="column items-end">
+      <div class="col">
+        <q-btn
+          label="Submit"
+          type="submit"
+          color="primary"
+          :loading="isPosting"
+          :disabled="!isSubmitEnabled"
+          @click="onSubmitClicked"
+        />
       </div>
-
-      <q-separator color="primary" class="q-my-md" />
-
-      <div class="column items-end">
-        <div class="col">
-          <q-btn
-            label="Submit"
-            type="submit"
-            color="primary"
-            :loading="isPosting"
-            :disabled="!isSubmitEnabled"
-          />
-        </div>
-      </div>
-    </q-form>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useItemsStore } from 'stores/items';
+import { onMounted, computed, ref } from 'vue';
+import { useItemsAvailableStore } from 'stores/itemsAvailable';
+import { useTagdsStore } from 'src/stores/tagds';
+import { date, useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
-import { useQuasar } from 'quasar';
 
 const router = useRouter();
 
-const store = useItemsStore();
+const selected = ref([]);
 
 const $q = useQuasar();
 
-const initialData = {
-  name: '',
-  description: '',
-  type: '',
-  brand: '',
-  model: '',
-  size: '',
-  consumer: '',
-  transaction: '',
-};
+const availableStore = useItemsAvailableStore();
+const tagdsStore = useTagdsStore();
 
-const data = ref(initialData);
+const list = computed(() => {
+  return availableStore.list;
+});
 
-const isSubmitEnabled = computed(() => {
-  return (
-    data.value.name &&
-    data.value.description &&
-    data.value.type &&
-    data.value.consumer &&
-    data.value.transaction
-  );
+const isLoading = computed(() => {
+  return availableStore.isFetching;
 });
 
 const isPosting = computed(() => {
-  return store.isPosting;
+  return tagdsStore.isPosting;
 });
 
-async function onSubmit() {
-  const payload = {
-    // retailer: this.currentRetailer,
-    name: data.value.name,
-    description: data.value.description,
-    type: data.value.type,
-    consumer: data.value.consumer,
-    transaction: data.value.transaction,
-    properties: {
-      brand: data.value.brand,
-      model: data.value.model,
-      size: data.value.size,
-    },
-  };
+const isSubmitEnabled = computed(() => {
+  return selected.value.length > 0;
+});
 
-  store
-    .add(payload)
+function onSubmitClicked() {
+  tagdsStore
+    .add(selected.value[0].id)
     .then(() => {
       $q.notify({
         type: 'positive',
-        message: 'Item added successfully',
+        message: 'Item posted for resale',
       });
       router.push({ name: 'items' });
     })
@@ -179,4 +84,101 @@ async function onSubmit() {
       });
     });
 }
+
+onMounted(() => {
+  availableStore.fetch();
+});
+
+const columns = [
+  {
+    name: 'createdAt',
+    required: true,
+    label: 'Created at',
+    align: 'left',
+    field: (row) => row.createdAt,
+    format: (val) => date.formatDate(val, 'MMMM Do, YYYY H:m:s'),
+    sortable: true,
+  },
+  {
+    name: 'status',
+    required: true,
+    label: 'Status',
+    align: 'left',
+    field: (row) => row.status,
+    format: (val) => `${val.toUpperCase()}`,
+    sortable: true,
+  },
+  {
+    name: 'tagdSlug',
+    required: true,
+    label: 'Tag ID',
+    align: 'left',
+    field: (row) => row.slug,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'consumer',
+    required: false,
+    label: 'Consumer',
+    align: 'left',
+    field: (row) => row.consumer.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'retailer',
+    required: false,
+    label: 'Retailer',
+    align: 'left',
+    field: (row) => row.item.retailer,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'item',
+    required: false,
+    label: 'Item',
+    align: 'left',
+    field: (row) => row.item.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'type',
+    required: false,
+    label: 'Type',
+    align: 'left',
+    field: (row) => row.item.type,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'brand',
+    required: false,
+    label: 'Brand',
+    align: 'left',
+    field: (row) => row.item.properties.brand ?? '',
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'model',
+    required: false,
+    label: 'Model',
+    align: 'left',
+    field: (row) => row.item.properties.model ?? '',
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'size',
+    required: false,
+    label: 'Size',
+    align: 'left',
+    field: (row) => row.item.properties.size ?? '',
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+];
 </script>

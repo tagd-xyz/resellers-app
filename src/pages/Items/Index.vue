@@ -1,31 +1,35 @@
 <template>
-  <q-table
-    class="q-pa-lg"
-    :loading="isLoading"
-    :rows="list"
-    :columns="columns"
-    row-key="name"
-    @row-click="onRowClicked"
-    :pagination="{
-      sortBy: 'desc',
-      descending: false,
-      page: 1,
-      rowsPerPage: 50,
-    }"
-  />
+  <div class="q-pa-lg">
+    <q-table
+      flat
+      bordered
+      title="Currently listed"
+      :loading="isLoading"
+      :rows="list"
+      :columns="columns"
+      row-key="name"
+      @row-click="onRowClicked"
+      :pagination="{
+        sortBy: 'desc',
+        descending: false,
+        page: 1,
+        rowsPerPage: 50,
+      }"
+    />
+  </div>
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
 import { date } from 'quasar';
-import { useItemsStore } from 'stores/items';
+import { useTagdsStore } from 'stores/tagds';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const store = useItemsStore();
+const store = useTagdsStore();
 
 const isLoading = computed(() => {
-  return store.isLoading;
+  return store.is.fetching;
 });
 
 const list = computed(() => {
@@ -33,7 +37,7 @@ const list = computed(() => {
 });
 
 function onRowClicked(evt, row) {
-  router.push({ name: 'items', id: row.id });
+  // router.push({ name: 'items', id: row.id });
   router.push({
     name: 'itemsShow',
     params: {
@@ -44,19 +48,10 @@ function onRowClicked(evt, row) {
 }
 
 onMounted(() => {
-  store.fetchAll();
+  store.fetch();
 });
 
 const columns = [
-  {
-    name: 'retailer',
-    required: true,
-    label: 'Retailer',
-    align: 'left',
-    field: (row) => row.retailer,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
   {
     name: 'createdAt',
     required: true,
@@ -67,11 +62,56 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'name',
+    name: 'status',
     required: true,
-    label: 'Name',
+    label: 'Status',
     align: 'left',
-    field: (row) => row.name,
+    field: (row) => row.status,
+    format: (val) => `${val.toUpperCase()}`,
+    sortable: true,
+  },
+  {
+    name: 'tagdSlug',
+    required: true,
+    label: 'Tag ID',
+    align: 'left',
+    field: (row) => row.slug,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'consumer',
+    required: false,
+    label: 'Consumer',
+    align: 'left',
+    field: (row) => row.parent?.consumer?.name ?? 'Unknown',
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'retailer',
+    required: false,
+    label: 'Retailer',
+    align: 'left',
+    field: (row) => row.item.retailer,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'item',
+    required: false,
+    label: 'Item',
+    align: 'left',
+    field: (row) => row.item.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: 'type',
+    required: false,
+    label: 'Type',
+    align: 'left',
+    field: (row) => row.item.type,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -80,7 +120,7 @@ const columns = [
     required: false,
     label: 'Brand',
     align: 'left',
-    field: (row) => row.properties.brand,
+    field: (row) => row.item.properties.brand ?? '',
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -89,17 +129,17 @@ const columns = [
     required: false,
     label: 'Model',
     align: 'left',
-    field: (row) => row.properties.model,
+    field: (row) => row.item.properties.model ?? '',
     format: (val) => `${val}`,
     sortable: true,
   },
   {
-    name: 'description',
-    required: true,
-    label: 'Description',
+    name: 'size',
+    required: false,
+    label: 'Size',
     align: 'left',
-    field: (row) => row.description.substring(0, 50),
-    format: (val) => `${val}...`,
+    field: (row) => row.item.properties.size ?? '',
+    format: (val) => `${val}`,
     sortable: true,
   },
 ];

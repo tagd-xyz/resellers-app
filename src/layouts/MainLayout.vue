@@ -7,7 +7,18 @@
           Tagd for Resellers
         </q-toolbar-title>
         <q-btn-dropdown flat icon="person" :label="userName">
-          <q-list>
+          <q-list bordered separator>
+            <q-item
+              clickable
+              v-close-popup
+              v-for="actor in me.actors"
+              :key="actor.id"
+            >
+              <q-item-section>
+                <q-item-label>{{ actor.name }}</q-item-label>
+                <q-item-label caption>Reseller</q-item-label>
+              </q-item-section>
+            </q-item>
             <q-item clickable v-close-popup @click="onItemClick">
               <q-item-section>
                 <q-item-label @click="showDialog = true">Sign Out</q-item-label>
@@ -49,18 +60,24 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LogoComponent from 'components/LogoComponent.vue';
 import { auth } from 'boot/firebase';
 import { useAuthStore } from 'stores/auth';
+import { useMeStore } from 'stores/me';
 
 const router = useRouter();
 const showDialog = ref(false);
 const store = useAuthStore();
+const storeMe = useMeStore();
 
 const userName = computed(() => {
   return store.user.displayName;
+});
+
+const me = computed(() => {
+  return storeMe.data;
 });
 
 function onSignOutClicked() {
@@ -68,4 +85,8 @@ function onSignOutClicked() {
     router.push({ name: 'signIn' });
   });
 }
+
+onMounted(() => {
+  storeMe.fetch();
+});
 </script>
