@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  tagd-resellers-app:
+    image: tagd-resellers-app
+    build:
+      context: ../
+      dockerfile: ${DTK_HOME}/dev/vuejs/node/16/buster-slim/Dockerfile
+      args:
+        DTK_VERSION: ${DTK_VERSION}
+    container_name: tagd-resellers-app
+    hostname: tagd-resellers-app
+    ports:
+      - 3105:9000
+    restart: always
+    volumes:
+      - ~/.ssh:/home/node/.ssh
+      - ../:/app
+    environment:
+      - PORT=3105
+      - NODE_UID=${USER_ID}
+      - NODE_GUID=${GROUP_ID}
+
+networks:
+  default:
+    external:
+      name: dev

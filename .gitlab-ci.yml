@@ -1,0 +1,80 @@
+image: alpine:latest
+
+variables:
+  GITLAB_HOST: gitlab.totallydev.com
+  DTK_VERSION: 1.7.11
+  DTK_HOME: /opt/dtk
+  QA_DOMAIN: tagd-resellers.qa.tclstaging.com
+  UAT_DOMAIN: tagd-resellers.uat.tclstaging.com
+  PRODUCTION_DOMAIN: www.tagd.com
+  PRODUCTION_BRANCH: 1.x.x
+  PRODUCTION_TAG_REGEX: '1\.(0|[1-9]\d*)\.(0|[1-9]\d*)$'
+  NODE_ENV: production
+
+.shared_runners:
+  tags:
+    - totally-uat-k8s
+
+stages:
+  - prepare
+  - deploy
+
+prepare:
+  stage: prepare
+  extends:
+    - .shared_runners
+  image: node:14-alpine
+  cache:
+    key: tagd-resellers-app
+    paths:
+      - node_modules/
+  before_script:
+    - ./build/install_dtk.sh
+  script:
+    - ./build/prepare.sh
+    - ./build/bundle.sh
+  artifacts:
+    paths:
+      - app.tar.gz
+    expire_in: 12 hours
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID || $DEPLOY_ONLY == "1"'
+    - if: '$CI_COMMIT_REF_NAME == $PRODUCTION_BRANCH'
+      when: never
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_REF_NAME =~ /^(uat|qa)$/'
+      when: always
+
+.deploy:
+  stage: deploy
+  extends:
+    - .shared_runners
+  image: debian:buster-slim
+  script:
+    - ./build/deploy.sh
+
+deploy:qa:
+  extends:
+    - .deploy
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^qa.*/'
+      when: on_success
+  variables:
+    ENV: qa
+    DOMAIN: ${QA_DOMAIN}
+  environment:
+    name: qa
+    url: https://${QA_DOMAIN}
+
+deploy:uat:
+  extends:
+    - .deploy
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^uat.*/'
+      when: on_success
+  variables:
+    ENV: uat
+    DOMAIN: ${UAT_DOMAIN}
+  environment:
+    name: uat
+    url: https://${UAT_DOMAIN}
