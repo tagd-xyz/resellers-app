@@ -8,6 +8,7 @@ export const useMeStore = defineStore('me', {
       data: {},
       is: {
         fetching: false,
+        updating: false,
       },
     };
   },
@@ -32,6 +33,22 @@ export const useMeStore = defineStore('me', {
           })
           .finally(() => {
             this.is.fetching = false;
+          });
+      });
+    },
+    update(resellerId, payload) {
+      return new Promise((resolve, reject) => {
+        this.is.updating = true;
+        api
+          .put('resellers/' + resellerId, payload)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          })
+          .finally(() => {
+            this.is.updating = false;
           });
       });
     },

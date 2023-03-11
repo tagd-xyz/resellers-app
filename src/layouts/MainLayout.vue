@@ -13,15 +13,16 @@
               v-close-popup
               v-for="actor in me.actors"
               :key="actor.id"
+              @click="onProfileClicked(actor.id)"
             >
               <q-item-section>
                 <q-item-label>{{ actor.name }}</q-item-label>
                 <q-item-label caption>Reseller</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item clickable v-close-popup @click="onItemClick">
+            <q-item clickable v-close-popup @click="showDialog = true">
               <q-item-section>
-                <q-item-label @click="showDialog = true">Sign Out</q-item-label>
+                <q-item-label>Sign Out</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -83,6 +84,15 @@ const me = computed(() => {
 function onSignOutClicked() {
   auth.signOut().then(() => {
     router.push({ name: 'signIn' });
+  });
+}
+
+function onProfileClicked(actorId) {
+  router.push({
+    name: 'profileShow',
+    params: {
+      id: actorId,
+    },
   });
 }
 

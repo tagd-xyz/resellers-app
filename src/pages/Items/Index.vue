@@ -37,14 +37,12 @@ const list = computed(() => {
 });
 
 function onRowClicked(evt, row) {
-  // router.push({ name: 'items', id: row.id });
   router.push({
     name: 'itemsShow',
     params: {
       id: row.id,
     },
   });
-  // console.log(row.id);
 }
 
 onMounted(() => {

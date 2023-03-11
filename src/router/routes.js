@@ -10,13 +10,6 @@ const routes = [
         name: 'items',
         path: 'items',
         component: () => import('src/pages/Items/Index.vue'),
-        // children: [
-        //   {
-        //     name: 'add',
-        //     path: 'add',
-        //     component: () => import('src/pages/Items/Add.vue'),
-        //   },
-        // ],
       },
       {
         name: 'itemsShow',
@@ -27,6 +20,11 @@ const routes = [
         name: 'itemsAdd',
         path: 'items/add',
         component: () => import('src/pages/Items/Add.vue'),
+      },
+      {
+        name: 'profileShow',
+        path: 'profile/:id',
+        component: () => import('src/pages/Profile/Show.vue'),
       },
     ],
   },
