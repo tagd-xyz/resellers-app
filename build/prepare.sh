@@ -17,7 +17,7 @@ case ${ENV} in
     ;;
 
   qa|uat)
-    api_hostname="tagd-ret-api.${ENV}.tclstaging.com"
+    api_hostname="tagd-res-api.${ENV}.tclstaging.com"
     ;;
 esac
 
