@@ -23,7 +23,7 @@ prepare:
   stage: prepare
   extends:
     - .shared_runners
-  image: node:14-alpine
+  image: node:16-alpine
   cache:
     key: tagd-resellers-app
     paths:
