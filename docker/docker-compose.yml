@@ -11,7 +11,7 @@ services:
     container_name: tagd-resellers-app
     hostname: tagd-resellers-app
     ports:
-      - 3105:9000
+      - 3105:3105
     restart: always
     volumes:
       - ~/.ssh:/home/node/.ssh
