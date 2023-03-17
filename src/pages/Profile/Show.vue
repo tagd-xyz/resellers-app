@@ -109,6 +109,7 @@ async function onSubmit() {
         type: 'positive',
         message: 'Profile updated successfully',
       });
+      storeMe.fetch();
     })
     .catch(() => {
       $q.notify({
