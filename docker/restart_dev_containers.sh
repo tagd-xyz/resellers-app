@@ -14,7 +14,7 @@ install_docker_toolkit () {
 }
 
 prepare_app () {
-  prepare_env_file ../.env.local ./conf/.env.dev
+  prepare_env_file ../.env ./conf/.env.dev
   # create_npmrc
 }
 

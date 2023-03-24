@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center row">
-    <logo-component />
+    <logo-component height="75px" class="q-ma-lg" />
     <div id="firebaseui-auth-container"></div>
   </q-page>
 </template>
