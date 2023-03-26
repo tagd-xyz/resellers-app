@@ -14,27 +14,16 @@ fi
 case ${ENV} in
   production)
     api_hostname="api.tagd.com"
-    firebaseApiKey=""
     firebaseAuthDomain=""
-    firebaseProjectId=""
     firebaseStorageBucket=""
-    firebaseMessagingSenderId=""
     firebaseAppId=""
     firebaseMeasurementId=""
     ;;
 
   qa|uat)
-    api_hostname="tagd-res-api.${ENV}.tclstaging.com"
-    firebaseApiKey="FIREBASE_API_KEY_${ENV}"
-    firebaseApiKey=${!firebaseApiKey}
-    firebaseAuthDomain="FIREBASE_AUTH_DOMAIN_${ENV}"
-    firebaseAuthDomain=${!firebaseAuthDomain}
-    firebaseProjectId="FIREBASE_PROJECT_ID_${ENV}"
-    firebaseProjectId=${!firebaseProjectId}
-    firebaseStorageBucket="FIREBASE_STORAGE_BUCKET_${ENV}"
-    firebaseStorageBucket=${!firebaseStorageBucket}
-    firebaseMessagingSenderId="FIREBASE_MESSAGING_SENDER_ID_${ENV}"
-    firebaseMessagingSenderId=${!firebaseMessagingSenderId}
+    api_hostname="tagd-ret-api.${ENV}.tclstaging.com"
+    firebaseAuthDomain="${FIREBASE_PROJECT_ID}.firebaseapp.com"
+    firebaseStorageBucket="${FIREBASE_PROJECT_ID}.appspot.com"
     firebaseAppId="FIREBASE_APP_ID_${ENV}"
     firebaseAppId=${!firebaseAppId}
     firebaseMeasurementId="FIREBASE_MEASUREMENT_ID_${ENV}"
@@ -44,16 +33,24 @@ esac
 
 API_URL=https://${api_hostname}/api/v1/
 
-FIREBASE_API_KEY=${firebaseApiKey},
-FIREBASE_AUTH_DOMAIN=${firebaseAuthDomain},
-FIREBASE_PROJECT_ID=${firebaseProjectId},
-FIREBASE_STORAGE_BUCKET=${firebaseStorageBucket},
-FIREBASE_MESSAGING_SENDER_ID=${firebaseMessagingSenderId},
-FIREBASE_APP_ID=${firebaseAppId},
+FIREBASE_API_KEY=${FIREBASE_API_KEY}
+FIREBASE_AUTH_DOMAIN=${firebaseAuthDomain}
+FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+FIREBASE_STORAGE_BUCKET=${firebaseStorageBucket}
+FIREBASE_MESSAGING_SENDER_ID=${FIREBASE_MESSAGING_SENDER_ID}
+FIREBASE_APP_ID=${firebaseAppId}
 FIREBASE_MEASUREMENT_ID=${firebaseMeasurementId}
 
 echo "ENV: ${ENV}"
 echo "API_URL: ${API_URL}"
+
+echo "FIREBASE_API_KEY: ${FIREBASE_API_KEY}"
+echo "FIREBASE_AUTH_DOMAIN: ${FIREBASE_AUTH_DOMAIN}"
+echo "FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID}"
+echo "FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET}"
+echo "FIREBASE_MESSAGING_SENDER_ID: ${FIREBASE_MESSAGING_SENDER_ID}"
+echo "FIREBASE_APP_ID: ${FIREBASE_APP_ID}"
+echo "FIREBASE_MEASUREMENT_ID: ${FIREBASE_MEASUREMENT_ID}"
 
 prepare_env_file ${local_env}
 
