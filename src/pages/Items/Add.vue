@@ -1,5 +1,15 @@
 <template>
   <div class="q-pa-lg">
+    <q-input
+      outlined
+      v-model="consumer"
+      label="Consumer's email"
+      hint="Type the consumer's email to see items available for resale"
+      type="email"
+      class="q-mb-lg"
+      @change="onConsumerChange"
+    />
+
     <q-table
       flat
       bordered
@@ -46,6 +56,8 @@ const router = useRouter();
 
 const selected = ref([]);
 
+const consumer = ref('');
+
 const $q = useQuasar();
 
 const availableStore = useItemsAvailableStore();
@@ -53,6 +65,10 @@ const tagdsStore = useTagdsStore();
 
 const list = computed(() => {
   return availableStore.list;
+});
+
+const isConsumerFilled = computed(() => {
+  return consumer.value.trim().length > 3;
 });
 
 const isLoading = computed(() => {
@@ -66,6 +82,14 @@ const isPosting = computed(() => {
 const isSubmitEnabled = computed(() => {
   return selected.value.length > 0;
 });
+
+function onConsumerChange() {
+  if (isConsumerFilled.value) {
+    availableStore.fetch(consumer.value);
+  } else {
+    availableStore.clear();
+  }
+}
 
 function onSubmitClicked() {
   tagdsStore
@@ -86,7 +110,7 @@ function onSubmitClicked() {
 }
 
 onMounted(() => {
-  availableStore.fetch();
+  // availableStore.fetch();
 });
 
 const columns = [
@@ -122,7 +146,7 @@ const columns = [
     required: false,
     label: 'Consumer',
     align: 'left',
-    field: (row) => row.consumer.name,
+    field: (row) => row.consumer.name ?? row.consumer.email,
     format: (val) => `${val}`,
     sortable: true,
   },
