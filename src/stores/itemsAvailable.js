@@ -15,10 +15,15 @@ export const useItemsAvailableStore = defineStore('itemsAvailable', {
     },
   },
   actions: {
-    fetch() {
+    clear() {
+      this.list = [];
+    },
+    fetch(consumer) {
       this.isFetching = true;
       api
-        .get('tagds-available-for-resale')
+        .get('tagds-available-for-resale', {
+          params: { consumer },
+        })
         .then((response) => {
           this.list = response.data.data;
         })
