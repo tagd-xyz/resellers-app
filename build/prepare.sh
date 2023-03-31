@@ -21,7 +21,7 @@ case ${ENV} in
     ;;
 
   qa|uat)
-    api_hostname="tagd-ret-api.${ENV}.tclstaging.com"
+    api_hostname="tagd-res-api.${ENV}.tclstaging.com"
     firebaseAuthDomain="${FIREBASE_PROJECT_ID}.firebaseapp.com"
     firebaseStorageBucket="${FIREBASE_PROJECT_ID}.appspot.com"
     firebaseAppId="FIREBASE_APP_ID_${ENV}"
