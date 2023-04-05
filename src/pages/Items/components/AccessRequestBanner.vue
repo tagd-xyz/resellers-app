@@ -8,16 +8,16 @@
       <code>{{ pendingAccessRequestCode }}</code>
     </q-banner>
     <q-banner
-      class="bg-negative text-white"
-      v-else-if="showRejectedAccessRequestBanner"
-    >
-      The consumer has rejected or revoked the grant to access his/her items
-    </q-banner>
-    <q-banner
       class="bg-secondary text-white"
       v-else-if="showRequestAccessBanner"
     >
-      The consumer has not granted you access to his/her items
+      <span v-if="showRejectedAccessRequestBanner">
+        The consumer has already rejected or revoked the grant to access his/her
+        items. You can request access again.
+      </span>
+      <span v-else>
+        The consumer has not granted you access to his/her items yet.
+      </span>
       <template v-slot:action>
         <q-btn
           flat
