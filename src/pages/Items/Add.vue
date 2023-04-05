@@ -10,36 +10,40 @@
       @change="onConsumerChange"
     />
 
-    <q-table
-      flat
-      bordered
-      title="Available for resale"
-      :loading="isLoading"
-      :rows="list"
-      :columns="columns"
-      row-key="name"
-      selection="single"
-      v-model:selected="selected"
-      :pagination="{
-        sortBy: 'desc',
-        descending: false,
-        page: 1,
-        rowsPerPage: 50,
-      }"
-    />
+    <access-request-banner :consumer="consumerAccessRequestLookup" />
 
-    <q-separator color="primary" class="q-my-md" />
+    <div>
+      <q-table
+        flat
+        bordered
+        title="Available for resale"
+        :loading="isLoading"
+        :rows="list"
+        :columns="columns"
+        row-key="name"
+        selection="single"
+        v-model:selected="selected"
+        :pagination="{
+          sortBy: 'desc',
+          descending: false,
+          page: 1,
+          rowsPerPage: 50,
+        }"
+      />
 
-    <div class="column items-end">
-      <div class="col">
-        <q-btn
-          label="Submit"
-          type="submit"
-          color="primary"
-          :loading="isPosting"
-          :disabled="!isSubmitEnabled"
-          @click="onSubmitClicked"
-        />
+      <q-separator color="primary" class="q-my-md" />
+
+      <div class="column items-end">
+        <div class="col">
+          <q-btn
+            label="Submit"
+            type="submit"
+            color="primary"
+            :loading="isPosting"
+            :disabled="!isSubmitEnabled"
+            @click="onSubmitClicked"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -51,12 +55,14 @@ import { useItemsAvailableStore } from 'stores/itemsAvailable';
 import { useTagdsStore } from 'src/stores/tagds';
 import { date, useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
+import AccessRequestBanner from './components/AccessRequestBanner.vue';
 
 const router = useRouter();
 
 const selected = ref([]);
 
 const consumer = ref('');
+const consumerAccessRequestLookup = ref(null);
 
 const $q = useQuasar();
 
@@ -85,9 +91,11 @@ const isSubmitEnabled = computed(() => {
 
 function onConsumerChange() {
   if (isConsumerFilled.value) {
+    consumerAccessRequestLookup.value = consumer.value;
     availableStore.fetch(consumer.value);
   } else {
     availableStore.clear();
+    consumerAccessRequestLookup.value = null;
   }
 }
 
@@ -111,6 +119,7 @@ function onSubmitClicked() {
 
 onMounted(() => {
   // availableStore.fetch();
+  // accessRequestsStore.fetch();
 });
 
 const columns = [
