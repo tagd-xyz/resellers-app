@@ -181,7 +181,7 @@ function onDeleteClicked() {
 function onConfirmClicked() {
   $q.dialog({
     title: 'Transfer to consumer',
-    message: 'What is the ID?',
+    message: 'What is the email?',
     prompt: {
       model: '',
       type: 'text', // optional

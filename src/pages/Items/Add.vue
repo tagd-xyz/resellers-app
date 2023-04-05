@@ -20,7 +20,7 @@
         :loading="isLoading"
         :rows="list"
         :columns="columns"
-        row-key="name"
+        row-key="id"
         selection="single"
         v-model:selected="selected"
         :pagination="{
@@ -118,7 +118,7 @@ function onSubmitClicked() {
 }
 
 onMounted(() => {
-  // availableStore.fetch();
+  availableStore.clear();
   // accessRequestsStore.fetch();
 });
 

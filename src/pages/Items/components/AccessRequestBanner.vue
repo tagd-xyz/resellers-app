@@ -76,7 +76,6 @@ const showPendingAccessRequestBanner = computed(() => {
 
 const hasConsumerApprovedAccessRequest = computed(() => {
   return accessRequestsStore.list.filter((accessRequest) => {
-    console.log(accessRequest);
     return (
       accessRequest.consumer.email == consumerEmail.value &&
       accessRequest.isApproved
