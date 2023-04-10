@@ -17,6 +17,7 @@ case ${ENV} in
     firebaseAuthDomain=""
     firebaseStorageBucket=""
     firebaseAppId=""
+    firebaseTenantId=""
     firebaseMeasurementId=""
     ;;
 
@@ -28,6 +29,8 @@ case ${ENV} in
     firebaseAppId=${!firebaseAppId}
     firebaseMeasurementId="FIREBASE_MEASUREMENT_ID_${ENV}"
     firebaseMeasurementId=${!firebaseMeasurementId}
+    firebaseTenantId="FIREBASE_TENANT_ID_${ENV}"
+    firebaseTenantId=${!firebaseTenantId}
     ;;
 esac
 
@@ -39,6 +42,7 @@ FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
 FIREBASE_STORAGE_BUCKET=${firebaseStorageBucket}
 FIREBASE_MESSAGING_SENDER_ID=${FIREBASE_MESSAGING_SENDER_ID}
 FIREBASE_APP_ID=${firebaseAppId}
+FIREBASE_TENANT_ID=${firebaseTenantId}
 FIREBASE_MEASUREMENT_ID=${firebaseMeasurementId}
 
 echo "ENV: ${ENV}"
@@ -50,6 +54,7 @@ echo "FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID}"
 echo "FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET}"
 echo "FIREBASE_MESSAGING_SENDER_ID: ${FIREBASE_MESSAGING_SENDER_ID}"
 echo "FIREBASE_APP_ID: ${FIREBASE_APP_ID}"
+echo "FIREBASE_TENANT_ID: ${FIREBASE_TENANT_ID}"
 echo "FIREBASE_MEASUREMENT_ID: ${FIREBASE_MEASUREMENT_ID}"
 
 prepare_env_file ${local_env}
