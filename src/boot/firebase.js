@@ -21,14 +21,24 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 
+async function refreshToken(user) {
+  const token = await user.getIdToken();
+  store.setToken(token);
+}
+
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     // user is logged
-    const token = await user.getIdToken();
     store.signIn(user);
-    store.setToken(token);
+    refreshToken(user);
+    store.setInterval(
+      setInterval(() => {
+        refreshToken(user);
+      }, 15 * 60 * 1000) // 15 minutes
+    );
   } else {
     // user is logged out
+    store.clearInterval();
     store.signOut();
     store.setToken(false);
   }
