@@ -23,5 +23,5 @@ services:
 
 networks:
   default:
-    external:
-      name: dev
+    name: dev
+    external: true
