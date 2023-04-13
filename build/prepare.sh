@@ -29,7 +29,7 @@ case ${ENV} in
     firebaseStorageBucket="${firebaseProjectId}.appspot.com"
     firebaseApiKey="FIREBASE_API_KEY_${ENV}"
     firebaseApiKey=${!firebaseApiKey}
-    firebaseMessagingSenderId="FIREBASE_MESSAGING_ID_${ENV}"
+    firebaseMessagingSenderId="FIREBASE_MESSAGING_SENDER_ID_${ENV}"
     firebaseMessagingSenderId=${!firebaseMessagingSenderId}
     firebaseAppId="FIREBASE_APP_ID_${ENV}"
     firebaseAppId=${!firebaseAppId}
