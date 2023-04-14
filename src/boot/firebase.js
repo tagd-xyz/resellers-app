@@ -26,10 +26,18 @@ async function refreshToken(user) {
   store.setToken(token);
 }
 
+async function checkClaims(user) {
+  const { claims } = await user.getIdTokenResult(true);
+  return claims.enabled ?? false;
+}
+
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     // user is logged
-    store.signIn(user);
+    const isEnabled = await checkClaims(user);
+    store.signIn(user, isEnabled);
+
+    // update token now and later
     refreshToken(user);
     store.setInterval(
       setInterval(() => {
@@ -38,9 +46,7 @@ auth.onAuthStateChanged(async (user) => {
     );
   } else {
     // user is logged out
-    store.clearInterval();
     store.signOut();
-    store.setToken(false);
   }
 });
 
