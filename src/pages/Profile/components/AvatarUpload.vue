@@ -20,12 +20,12 @@
       :disable="disable"
       square
       flat
-      color="primary"
+      color="grey-7"
       class="full-width"
-      accept=".jpg, image/*"
       method="PUT"
       :url="uploadUrl"
       :label="uploadMessage"
+      :sendRaw="true"
       @added="onUploadAdd"
       @removed="onUploadRemoved"
       @failed="onUploadFail"
@@ -126,4 +126,12 @@ function reset() {
   errorMessage.value = null;
   uploader.value.reset();
 }
+
+// function factory(files) {
+//   return new Promise(() => {
+//     return {
+//       sendRaw: true,
+//     };
+//   });
+// }
 </script>
