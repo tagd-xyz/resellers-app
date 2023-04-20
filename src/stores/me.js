@@ -52,5 +52,19 @@ export const useMeStore = defineStore('me', {
           });
       });
     },
+    requestAvatarUpload(resellerId, fileName) {
+      return new Promise((resolve, reject) => {
+        api
+          .post('resellers/' + resellerId + '/uploads', {
+            fileName: fileName,
+          })
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
   },
 });

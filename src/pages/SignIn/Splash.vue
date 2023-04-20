@@ -34,7 +34,6 @@ const showMessage = ref(false);
 const router = useRouter();
 
 function signOutClick() {
-  console.log('will sign out');
   auth.signOut().then(() => {
     router.push({ name: 'signIn' });
   });
