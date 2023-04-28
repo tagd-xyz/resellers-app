@@ -56,7 +56,7 @@
               </div>
               <div class="text-subtitle2">
                 on
-                {{ date.formatDate(tagd?.createdAt, 'MMMM Do, YYYY H:m:s') }}
+                {{ date.formatDate(tagd?.createdAt, 'MMMM Do, YYYY HH:mm:ss') }}
               </div>
             </div>
             <div v-else>Not available</div>
