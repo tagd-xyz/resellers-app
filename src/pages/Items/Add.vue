@@ -129,7 +129,7 @@ const columns = [
     label: 'Created at',
     align: 'left',
     field: (row) => row.createdAt,
-    format: (val) => date.formatDate(val, 'MMMM Do, YYYY H:m:s'),
+    format: (val) => date.formatDate(val, 'MMMM Do, YYYY HH:mm:ss'),
     sortable: true,
   },
   {
