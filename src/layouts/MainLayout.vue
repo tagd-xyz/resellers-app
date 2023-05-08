@@ -32,6 +32,7 @@
       <q-tabs align="left">
         <q-route-tab to="/items" label="My Items" />
         <q-route-tab to="/items/add" label="Add item" />
+        <q-route-tab to="/charts" label="Charts" />
       </q-tabs>
     </q-header>
 
