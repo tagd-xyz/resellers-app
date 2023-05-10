@@ -26,11 +26,6 @@ const routes = [
         path: 'profile/:id',
         component: () => import('src/pages/Profile/Show.vue'),
       },
-      {
-        name: 'charts',
-        path: 'charts',
-        component: () => import('src/pages/Charts/Index.vue'),
-      },
     ],
   },
   {
