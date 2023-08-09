@@ -29,7 +29,7 @@
           <q-card-section>
             <div class="text-h6">Properties</div>
             <div>
-              <strong>Type:</strong> {{ tagd?.item?.type ?? 'Unknown' }}
+              <strong>Type:</strong> {{ tagd?.item?.type?.name ?? 'Unknown' }}
             </div>
             <div>
               <strong>Brand:</strong>

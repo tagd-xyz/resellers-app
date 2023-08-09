@@ -182,7 +182,7 @@ const columns = [
     required: false,
     label: 'Type',
     align: 'left',
-    field: (row) => row.item.type,
+    field: (row) => row.item.type.name,
     format: (val) => `${val}`,
     sortable: true,
   },
