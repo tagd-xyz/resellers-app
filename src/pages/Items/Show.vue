@@ -44,21 +44,21 @@
               {{ tagd?.item?.properties.size ?? 'Unknown' }}
             </div>
             <div>
-                <strong>Year of production:</strong>
-                {{ tagd?.item?.properties.yearOfProduction ?? 'Unknown' }}
-              </div>
-              <div>
-                <strong>Manufacturer's Serial Number:</strong>
-                {{ tagd?.item?.properties.manufacturerSerialNumber ?? 'Unknown' }}
-              </div>
-              <div>
-                <strong>Retailer Serial Number:</strong>
-                {{ tagd?.item?.properties.retailerSerialNumber ?? 'Unknown' }}
-              </div>
-              <div>
-                <strong>Recommended Retail Price:</strong>
-                {{ tagd?.item?.properties.rrp ?? 'Unknown' }}
-              </div>
+              <strong>Year of production:</strong>
+              {{ tagd?.item?.properties.yearOfProduction ?? 'Unknown' }}
+            </div>
+            <div>
+              <strong>Manufacturer's Serial Number:</strong>
+              {{ tagd?.item?.properties.manufacturerSerialNumber ?? 'Unknown' }}
+            </div>
+            <div>
+              <strong>Retailer Serial Number:</strong>
+              {{ tagd?.item?.properties.retailerSerialNumber ?? 'Unknown' }}
+            </div>
+            <div>
+              <strong>Recommended Retail Price:</strong>
+              {{ tagd?.item?.properties.rrp ?? 'Unknown' }}
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -126,22 +126,81 @@
         />
       </div>
     </div>
+
+    <q-dialog v-model="showDialog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Confirm sale</div>
+          <div class="text-subtitle2">
+            Are you sure you want to confirm the sale of this tag?
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <q-input
+            v-model="saleConsumerEmail"
+            type="email"
+            label="Consumer email"
+            hint="Enter the consumer email"
+            :rules="['email']"
+          />
+          <q-input
+            v-model.number="salePriceAmount"
+            type="number"
+            label="Price amount"
+            hint="Enter the price amount"
+          />
+          <q-select
+            v-model="salePriceCurrency"
+            :options="currencies"
+            label="Currency"
+            hint="Select a currency from list"
+            :loading="isFetchingCurrencies"
+          />
+        </q-card-section>
+
+        <q-separator class="q-my-md" />
+
+        <q-card-actions align="right">
+          <q-btn
+            label="Cancel"
+            flat
+            color="primary"
+            @click="showDialog = false"
+          />
+          <q-btn
+            label="Confirm"
+            flat
+            color="red"
+            @click="onConfirmDialogClicked"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useTagdStore } from 'stores/tagd';
 import { useTagdsStore } from 'stores/tagds';
+import { useRefStore } from 'stores/ref';
 import { useRoute, useRouter } from 'vue-router';
 import { date } from 'quasar';
 import { useQuasar } from 'quasar';
+
+const showDialog = ref(false);
+
+const saleConsumerEmail = ref(null);
+const salePriceAmount = ref(null);
+const salePriceCurrency = ref(null);
 
 const router = useRouter();
 const route = useRoute();
 
 const storeTagd = useTagdStore();
 const storeTagds = useTagdsStore();
+const storeRef = useRefStore();
 
 const $q = useQuasar();
 
@@ -179,6 +238,29 @@ const tagd = computed(() => {
 
 onMounted(() => {
   storeTagd.fetch(tagdId.value);
+  storeRef.fetchCurrencies();
+});
+
+const isFetchingCurrencies = computed(() => {
+  return storeRef.is.fetching;
+});
+
+const currencies = computed(() => {
+  return (
+    storeRef.data.currencies?.map((currency) => {
+      return {
+        label: `${currency.name} (${currency.symbol})`,
+        value: currency.code,
+      };
+    }) ?? []
+  );
+});
+
+watch(currencies, () => {
+  const currency = currencies.value.find((currency) => {
+    return currency.value === 'GBP';
+  });
+  salePriceCurrency.value = currency;
 });
 
 function onDeleteClicked() {
@@ -200,38 +282,27 @@ function onDeleteClicked() {
 }
 
 function onConfirmClicked() {
-  $q.dialog({
-    title: 'Transfer to consumer',
-    message: 'What is the email?',
-    prompt: {
-      model: '',
-      type: 'text', // optional
-    },
-    cancel: true,
-    persistent: true,
-  })
-    .onOk((email) => {
-      storeTagds
-        .confirm(tagdId.value, email)
-        .then(() => {
-          $q.notify({
-            type: 'positive',
-            message: 'Auction confirmed successfully',
-          });
-          router.push({ name: 'items' });
-        })
-        .catch(() => {
-          $q.notify({
-            type: 'negative',
-            message: 'There has been an error',
-          });
-        });
+  showDialog.value = true;
+}
+
+function onConfirmDialogClicked() {
+  storeTagds
+    .confirm(tagdId.value, saleConsumerEmail.value, {
+      amount: salePriceAmount.value,
+      currency: salePriceCurrency.value.value,
     })
-    .onCancel(() => {
-      // cancelled
+    .then(() => {
+      $q.notify({
+        type: 'positive',
+        message: 'Auction confirmed successfully',
+      });
+      router.push({ name: 'items' });
     })
-    .onDismiss(() => {
-      // finally
+    .catch(() => {
+      $q.notify({
+        type: 'negative',
+        message: 'There has been an error',
+      });
     });
 }
 
