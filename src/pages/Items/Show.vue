@@ -81,21 +81,6 @@
       </div>
     </div>
 
-    <!-- <q-table
-      class="q-my-lg"
-      title="Tags"
-      :loading="isLoading"
-      :rows="list"
-      :columns="columns"
-      row-key="id"
-      :pagination="{
-        sortBy: 'desc',
-        descending: false,
-        page: 1,
-        rowsPerPage: 50,
-      }"
-    /> -->
-
     <q-separator color="primary" class="q-my-md" />
 
     <div class="column items-end">
