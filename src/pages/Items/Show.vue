@@ -157,6 +157,18 @@
             hint="Select a currency from list"
             :loading="isFetchingCurrencies"
           />
+          <q-select
+            v-model="saleLocationCountry"
+            :options="countries"
+            label="Country"
+            hint="Select a country from list"
+            :loading="isFetchingCountries"
+          />
+          <q-input
+            v-model="saleLocationCity"
+            label="City"
+            hint="Enter the city name"
+          />
         </q-card-section>
 
         <q-separator class="q-my-md" />
@@ -194,6 +206,8 @@ const showDialog = ref(false);
 const saleConsumerEmail = ref(null);
 const salePriceAmount = ref(null);
 const salePriceCurrency = ref(null);
+const saleLocationCountry = ref(null);
+const saleLocationCity = ref(null);
 
 const router = useRouter();
 const route = useRoute();
@@ -239,9 +253,14 @@ const tagd = computed(() => {
 onMounted(() => {
   storeTagd.fetch(tagdId.value);
   storeRef.fetchCurrencies();
+  storeRef.fetchCountries();
 });
 
 const isFetchingCurrencies = computed(() => {
+  return storeRef.is.fetching;
+});
+
+const isFetchingCountries = computed(() => {
   return storeRef.is.fetching;
 });
 
@@ -256,11 +275,29 @@ const currencies = computed(() => {
   );
 });
 
+const countries = computed(() => {
+  return (
+    storeRef.data.countries?.map((country) => {
+      return {
+        label: `${country.name}`,
+        value: country.code,
+      };
+    }) ?? []
+  );
+});
+
 watch(currencies, () => {
   const currency = currencies.value.find((currency) => {
     return currency.value === 'GBP';
   });
   salePriceCurrency.value = currency;
+});
+
+watch(countries, () => {
+  const country = countries.value.find((country) => {
+    return country.value === 'GBR';
+  });
+  saleLocationCountry.value = country;
 });
 
 function onDeleteClicked() {
@@ -287,10 +324,18 @@ function onConfirmClicked() {
 
 function onConfirmDialogClicked() {
   storeTagds
-    .confirm(tagdId.value, saleConsumerEmail.value, {
-      amount: salePriceAmount.value,
-      currency: salePriceCurrency.value.value,
-    })
+    .confirm(
+      tagdId.value,
+      saleConsumerEmail.value,
+      {
+        amount: salePriceAmount.value,
+        currency: salePriceCurrency.value.value,
+      },
+      {
+        city: saleLocationCity.value,
+        country: saleLocationCountry.value.value,
+      }
+    )
     .then(() => {
       $q.notify({
         type: 'positive',

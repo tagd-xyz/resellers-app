@@ -64,13 +64,14 @@ export const useTagdsStore = defineStore('tagds', {
           });
       });
     },
-    confirm(tagdId, consumerEmail, price) {
+    confirm(tagdId, consumerEmail, price, location) {
       return new Promise((resolve, reject) => {
         this.is.confirming = true;
         api
           .post('tagds/' + tagdId + '/confirm', {
             consumerEmail: consumerEmail,
             price: price,
+            location: location,
           })
           .then((response) => {
             resolve(response);
