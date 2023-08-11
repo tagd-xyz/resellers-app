@@ -82,7 +82,6 @@
               </div>
             </div>
             <div v-else>Price Not available</div>
-            <div v-else>Not available</div>
             <div v-if="tagd?.meta?.location">
               <div class="text-subtitle2">
                 Location {{ tagd.meta.location.city }} {{ tagd.meta.location.country }}
