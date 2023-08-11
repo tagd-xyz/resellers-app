@@ -65,17 +65,30 @@
       <div class="col">
         <q-card class="q-my-sm">
           <q-card-section>
-            <div class="text-h6">Transaction ID</div>
+            <div class="text-h6">Transaction</div>
             <div v-if="tagd?.meta?.transaction">
               <div class="text-subtitle2">
-                {{ tagd.meta.transaction }}
+                ID {{ tagd.meta.transaction }}
               </div>
               <div class="text-subtitle2">
                 on
                 {{ date.formatDate(tagd?.createdAt, 'MMMM Do, YYYY HH:mm:ss') }}
               </div>
             </div>
+            <div v-else>ID Not available</div>
+            <div v-if="tagd?.meta?.price">
+              <div class="text-subtitle2">
+                Price {{ tagd.meta.price.amount }} {{ tagd.meta.price.currency }}
+              </div>
+            </div>
+            <div v-else>Price Not available</div>
             <div v-else>Not available</div>
+            <div v-if="tagd?.meta?.location">
+              <div class="text-subtitle2">
+                Location {{ tagd.meta.location.city }} {{ tagd.meta.location.country }}
+              </div>
+            </div>
+            <div v-else>Location Not available</div>
           </q-card-section>
         </q-card>
       </div>
