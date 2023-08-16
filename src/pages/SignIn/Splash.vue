@@ -4,7 +4,7 @@
 
     <q-card v-if="showMessage" class="my-card bg-negative text-white">
       <q-card-section>
-        <div class="text-h6">You account is not enabled</div>
+        <div class="text-h6">Your account is not enabled</div>
         <div class="text-subtitle2">{{ store.user.email }}</div>
       </q-card-section>
 
