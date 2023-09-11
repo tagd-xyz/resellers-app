@@ -88,7 +88,7 @@ const list = computed(() => {
     });
 });
 
-function onRowClicked(evt, row) {
+function onRowClicked(row) {
   router.push({
     name: 'itemsShow',
     params: {
