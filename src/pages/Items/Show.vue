@@ -82,15 +82,15 @@
             </div>
             <div v-if="tagd?.meta?.price">
               <div class="text-subtitle2">
-                Price {{ tagd.meta.price.amount }}
+                Price: {{ tagd.meta.price.amount }}
                 {{ tagd.meta.price.currency }}
               </div>
             </div>
             <div v-else>Price Not available</div>
             <div v-if="tagd?.meta?.location">
               <div class="text-subtitle2">
-                Location {{ tagd.meta.location.city }}
-                {{ tagd.meta.location.country }}
+                Location: {{ tagd.meta.location.city }},
+                {{ findCountryByCode(tagd.meta.location.country)?.label }}
               </div>
             </div>
             <div v-else>Location Not available</div>
@@ -333,6 +333,12 @@ function onDeleteClicked() {
         message: 'There has been an error',
       });
     });
+}
+
+function findCountryByCode(code) {
+  return countries.value.find((country) => {
+    return country.value === code;
+  });
 }
 
 function onConfirmClicked() {
