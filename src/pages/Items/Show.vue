@@ -63,25 +63,47 @@
         </q-card>
       </div>
       <div class="col">
-        <q-card class="q-my-sm">
+        <q-card class="q-my-sm" v-if="isTransferred">
           <q-card-section>
             <div class="text-h6">Transaction</div>
+            <div class="text-subtitle2">
+              from {{ tagd?.parent.consumer.name }} &lt;{{
+                tagd?.parent.consumer.email
+              }}&gt;
+            </div>
+            <div class="text-subtitle2">
+              to {{ tagd?.children[0]?.consumer.name }} &lt;{{
+                tagd?.children[0]?.consumer.email
+              }}&gt;
+            </div>
             <div class="text-subtitle2">
               on
               {{ date.formatDate(tagd?.createdAt, 'MMMM Do, YYYY HH:mm:ss') }}
             </div>
             <div v-if="tagd?.meta?.price">
               <div class="text-subtitle2">
-                Price {{ tagd.meta.price.amount }} {{ tagd.meta.price.currency }}
+                Price {{ tagd.meta.price.amount }}
+                {{ tagd.meta.price.currency }}
               </div>
             </div>
             <div v-else>Price Not available</div>
             <div v-if="tagd?.meta?.location">
               <div class="text-subtitle2">
-                Location {{ tagd.meta.location.city }} {{ tagd.meta.location.country }}
+                Location {{ tagd.meta.location.city }}
+                {{ tagd.meta.location.country }}
               </div>
             </div>
             <div v-else>Location Not available</div>
+          </q-card-section>
+        </q-card>
+        <q-card class="q-my-sm" v-else>
+          <q-card-section>
+            <div class="text-h6">Transaction</div>
+            <div class="text-subtitle2">
+              on sale by {{ tagd?.parent.consumer.name }} &lt;{{
+                tagd?.parent.consumer.email
+              }}&gt;
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -275,6 +297,10 @@ const countries = computed(() => {
       };
     }) ?? []
   );
+});
+
+const isTransferred = computed(() => {
+  return tagd.value?.status == 'transferred';
 });
 
 watch(currencies, () => {

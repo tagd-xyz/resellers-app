@@ -7,7 +7,7 @@
       hint="Type the consumer's email to see items available for resale"
       type="email"
       class="q-mb-lg"
-      @change="onConsumerChange"
+      @keydown.enter.prevent="onConsumerKeyDown"
     />
 
     <access-request-banner :consumer="consumerAccessRequestLookup" />
@@ -88,6 +88,12 @@ const isPosting = computed(() => {
 const isSubmitEnabled = computed(() => {
   return selected.value.length > 0;
 });
+
+function onConsumerKeyDown(e) {
+  if (e.key === 'Enter') {
+    onConsumerChange();
+  }
+}
 
 function onConsumerChange() {
   if (isConsumerFilled.value) {
