@@ -123,7 +123,7 @@ const columns = [
   {
     name: 'tagdSlug',
     required: true,
-    label: 'Tag ID',
+    label: 'Digital ID',
     align: 'left',
     field: (row) => row.slug,
     format: (val) => `${val}`,
