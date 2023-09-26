@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-lg">
     <p class="text-h5">
-      Tag ID {{ tagd?.slug }}
+      Digital ID {{ tagd?.slug }}
       <q-badge outline color="primary" :label="tagd?.status" />
       <q-spinner v-if="isLoading" color="black" />
     </p>
