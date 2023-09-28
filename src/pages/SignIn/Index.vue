@@ -1,10 +1,15 @@
 <template>
-  <q-page class="flex flex-center">
-    <div class="text-right">
-      <logo-component height="75px" class="q-ma-lg" />
-      <h4 class="q-mr-lg text-primary">Resellers Demo</h4>
-    </div>
-    <div id="firebaseui-auth-container"></div>
+  <q-page class="flex flex-center row">
+    <q-card flat>
+      <q-card-section class="text-center">
+        <h5 class="q-mr-lg text-primary">
+          <logo-component height="55px" class="q-ma-lg" />
+          <br>
+          Resellers Demo
+        </h5>
+        <div id="firebaseui-auth-container"></div>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 
