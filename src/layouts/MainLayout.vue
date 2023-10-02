@@ -8,13 +8,8 @@
         </q-toolbar-title>
         <q-btn-dropdown flat icon="person" :label="userName">
           <q-list bordered separator>
-            <q-item
-              clickable
-              v-close-popup
-              v-for="actor in me.actors"
-              :key="actor.id"
-              @click="onProfileClicked(actor.id)"
-            >
+            <q-item clickable v-close-popup v-for="actor in me.actors" :key="actor.id"
+              @click="onProfileClicked(actor.id)">
               <q-item-section>
                 <q-item-label>{{ actor.name }}</q-item-label>
                 <q-item-label caption>Reseller</q-item-label>
@@ -47,13 +42,7 @@
 
         <q-card-actions align="right">
           <q-btn flat label="No" color="primary" v-close-popup />
-          <q-btn
-            flat
-            label="Yes, sign out"
-            color="primary"
-            v-close-popup
-            @click="onSignOutClicked"
-          />
+          <q-btn flat label="Yes, sign out" color="primary" v-close-popup @click="onSignOutClicked" />
         </q-card-actions>
       </q-card>
     </q-dialog>

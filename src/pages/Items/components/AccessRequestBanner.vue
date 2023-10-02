@@ -1,16 +1,10 @@
 <template>
   <div>
-    <q-banner
-      class="bg-secondary text-white"
-      v-if="showPendingAccessRequestBanner"
-    >
+    <q-banner class="bg-secondary text-white" v-if="showPendingAccessRequestBanner">
       Waiting for the consumer to grant you access to his/her items. Code
       <code>{{ pendingAccessRequestCode }}</code>
     </q-banner>
-    <q-banner
-      class="bg-secondary text-white"
-      v-else-if="showRequestAccessBanner"
-    >
+    <q-banner class="bg-secondary text-white" v-else-if="showRequestAccessBanner">
       <span v-if="showRejectedAccessRequestBanner">
         The consumer has already rejected or revoked the grant to access his/her
         items. You can request access again.
@@ -19,13 +13,7 @@
         The consumer has not granted you access to his/her items yet.
       </span>
       <template v-slot:action>
-        <q-btn
-          flat
-          color="white"
-          label="Request access"
-          :loading="isRequestingAccess"
-          @click="onRequestAccessClick"
-        />
+        <q-btn flat color="white" label="Request access" :loading="isRequestingAccess" @click="onRequestAccessClick" />
       </template>
     </q-banner>
   </div>
@@ -145,5 +133,5 @@ function onRequestAccessClick() {
     });
 }
 
-onMounted(() => {});
+onMounted(() => { });
 </script>

@@ -1,48 +1,26 @@
 <template>
   <div class="q-pa-lg">
-    <q-input
-      outlined
-      v-model="consumer"
-      label="Consumer's email"
-      hint="Type the consumer's email to see items available for resale"
-      type="email"
-      class="q-mb-lg"
-      @keydown.enter.prevent="onConsumerKeyDown"
-    />
+    <q-input outlined v-model="consumer" label="Consumer's email"
+      hint="Type the consumer's email to see items available for resale" type="email" class="q-mb-lg"
+      @keydown.enter.prevent="onConsumerKeyDown" />
 
     <access-request-banner :consumer="consumerAccessRequestLookup" />
 
     <div>
-      <q-table
-        flat
-        bordered
-        title="Available for resale"
-        :loading="isLoading"
-        :rows="list"
-        :columns="columns"
-        row-key="id"
-        selection="single"
-        v-model:selected="selected"
-        :pagination="{
+      <q-table flat bordered title="Available for resale" :loading="isLoading" :rows="list" :columns="columns"
+        row-key="id" selection="single" v-model:selected="selected" :pagination="{
           sortBy: 'desc',
           descending: false,
           page: 1,
           rowsPerPage: 50,
-        }"
-      />
+        }" />
 
       <q-separator color="primary" class="q-my-md" />
 
       <div class="column items-end">
         <div class="col">
-          <q-btn
-            label="Submit"
-            type="submit"
-            color="primary"
-            :loading="isPosting"
-            :disabled="!isSubmitEnabled"
-            @click="onSubmitClicked"
-          />
+          <q-btn label="Submit" type="submit" color="primary" :loading="isPosting" :disabled="!isSubmitEnabled"
+            @click="onSubmitClicked" />
         </div>
       </div>
     </div>

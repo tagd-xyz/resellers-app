@@ -16,22 +16,9 @@
       {{ infoMessage }}
     </p>
 
-    <q-uploader
-      :disable="disable"
-      square
-      flat
-      color="grey-7"
-      class="full-width"
-      method="PUT"
-      :url="uploadUrl"
-      :label="uploadMessage"
-      :sendRaw="true"
-      @added="onUploadAdd"
-      @removed="onUploadRemoved"
-      @failed="onUploadFail"
-      @uploaded="onUploadSuccess"
-      ref="uploader"
-    />
+    <q-uploader :disable="disable" square flat color="grey-7" class="full-width" method="PUT" :url="uploadUrl"
+      :label="uploadMessage" :sendRaw="true" @added="onUploadAdd" @removed="onUploadRemoved" @failed="onUploadFail"
+      @uploaded="onUploadSuccess" ref="uploader" />
 
     <!-- <q-uploader
       flat

@@ -16,12 +16,7 @@
               sold by {{ tagd?.item?.retailer ?? 'Unknown' }}
             </div>
             <q-separator class="q-my-md" />
-            <div
-              class="text"
-              v-html="
-                tagd?.item?.description.replace(/(?:\r\n|\r|\n)/g, '<br />')
-              "
-            />
+            <div class="text" v-html="tagd?.item?.description.replace(/(?:\r\n|\r|\n)/g, '<br />')" />
           </q-card-section>
         </q-card>
 
@@ -114,30 +109,12 @@
 
     <div class="column items-end">
       <div class="col q-gutter-sm">
-        <q-btn
-          label="Confirm Sale"
-          type="button"
-          color="primary"
-          :loading="isConfirming"
-          :disabled="!isConfirmEnabled"
-          @click="onConfirmClicked"
-        />
-        <q-btn
-          label="End auction"
-          type="button"
-          color="secondary"
-          :loading="isDeleting"
-          :disabled="!isCancelEnabled"
-          @click="onCancelClicked"
-        />
-        <q-btn
-          label="Delete"
-          type="button"
-          color="negative"
-          :loading="isDeleting"
-          :disabled="!isDeleteEnabled"
-          @click="onDeleteClicked"
-        />
+        <q-btn label="Confirm Sale" type="button" color="primary" :loading="isConfirming" :disabled="!isConfirmEnabled"
+          @click="onConfirmClicked" />
+        <q-btn label="End auction" type="button" color="secondary" :loading="isDeleting" :disabled="!isCancelEnabled"
+          @click="onCancelClicked" />
+        <q-btn label="Delete" type="button" color="negative" :loading="isDeleting" :disabled="!isDeleteEnabled"
+          @click="onDeleteClicked" />
       </div>
     </div>
 
@@ -151,55 +128,21 @@
         </q-card-section>
 
         <q-card-section>
-          <q-input
-            v-model="saleConsumerEmail"
-            type="email"
-            label="Consumer email"
-            hint="Enter the consumer email"
-            :rules="['email']"
-          />
-          <q-input
-            v-model.number="salePriceAmount"
-            type="number"
-            label="Price amount"
-            hint="Enter the price amount"
-          />
-          <q-select
-            v-model="salePriceCurrency"
-            :options="currencies"
-            label="Currency"
-            hint="Select a currency from list"
-            :loading="isFetchingCurrencies"
-          />
-          <q-select
-            v-model="saleLocationCountry"
-            :options="countries"
-            label="Country"
-            hint="Select a country from list"
-            :loading="isFetchingCountries"
-          />
-          <q-input
-            v-model="saleLocationCity"
-            label="City"
-            hint="Enter the city name"
-          />
+          <q-input v-model="saleConsumerEmail" type="email" label="Consumer email" hint="Enter the consumer email"
+            :rules="['email']" />
+          <q-input v-model.number="salePriceAmount" type="number" label="Price amount" hint="Enter the price amount" />
+          <q-select v-model="salePriceCurrency" :options="currencies" label="Currency" hint="Select a currency from list"
+            :loading="isFetchingCurrencies" />
+          <q-select v-model="saleLocationCountry" :options="countries" label="Country" hint="Select a country from list"
+            :loading="isFetchingCountries" />
+          <q-input v-model="saleLocationCity" label="City" hint="Enter the city name" />
         </q-card-section>
 
         <q-separator class="q-my-md" />
 
         <q-card-actions align="right">
-          <q-btn
-            label="Cancel"
-            flat
-            color="primary"
-            @click="showDialog = false"
-          />
-          <q-btn
-            label="Confirm"
-            flat
-            color="red"
-            @click="onConfirmDialogClicked"
-          />
+          <q-btn label="Cancel" flat color="primary" @click="showDialog = false" />
+          <q-btn label="Confirm" flat color="red" @click="onConfirmDialogClicked" />
         </q-card-actions>
       </q-card>
     </q-dialog>

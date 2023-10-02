@@ -7,46 +7,23 @@
 
     <div class="row q-col-gutter-lg">
       <div class="col-2">
-        <avatar-upload
-          :actorId="actorId"
-          :logo="data.logoSmallUrl"
-          @uploaded="onUpload"
-          :disable="isFetching"
-          ref="uploader"
-        />
+        <avatar-upload :actorId="actorId" :logo="data.logoSmallUrl" @uploaded="onUpload" :disable="isFetching"
+          ref="uploader" />
       </div>
       <div class="col">
         <q-form @submit.prevent="onSubmit">
-          <q-input
-            v-model="data.name"
-            label="Name"
-            hint="Enter the name of the reseller"
-            placeholder="i.e. eBay"
-            :rules="[
-              (val) => (val && val.length > 0) || 'This field is required',
-            ]"
-            :disable="isFetching"
-          />
+          <q-input v-model="data.name" label="Name" hint="Enter the name of the reseller" placeholder="i.e. eBay" :rules="[
+            (val) => (val && val.length > 0) || 'This field is required',
+          ]" :disable="isFetching" />
 
-          <q-input
-            v-model="data.website"
-            label="Website"
-            hint="Enter the website URL"
-            placeholder="i.e. https::/www.ebay.co.uk"
-            :disable="isFetching"
-          />
+          <q-input v-model="data.website" label="Website" hint="Enter the website URL"
+            placeholder="i.e. https::/www.ebay.co.uk" :disable="isFetching" />
 
           <q-separator color="primary" class="q-my-md" />
 
           <div class="column items-end">
             <div class="col">
-              <q-btn
-                label="Update"
-                type="submit"
-                color="primary"
-                :loading="isFetching"
-                :disabled="!isSubmitEnabled"
-              />
+              <q-btn label="Update" type="submit" color="primary" :loading="isFetching" :disabled="!isSubmitEnabled" />
             </div>
           </div>
         </q-form>
